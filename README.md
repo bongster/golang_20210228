@@ -22,4 +22,4 @@ You have the luxury of proposing (not implementing) one killer feature in your a
 ### Tech Stacks
 ------
 
-### Referrences
+### References
