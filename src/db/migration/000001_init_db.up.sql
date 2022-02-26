@@ -8,14 +8,14 @@ CREATE TABLE IF NOT EXISTS users(
    updated_at timestamptz NOT NULL DEFAULT (now())
 );
 
-CREATE TABLE IF NOT EXISTS transactions(
+CREATE TABLE IF NOT EXISTS transfers(
    id serial PRIMARY KEY,
    user_id integer not null references users,
-   transaction_type varchar(255) not null,
+   transfer_type varchar(255) not null,
    status varchar(50) not null,
    amount bigint NOT NULL,
    created_at timestamptz NOT NULL DEFAULT (now()),
    updated_at timestamptz NOT NULL DEFAULT (now())
 );
 
-CREATE INDEX IF NOT EXISTS transactions_amount_idx on transactions (amount);
+CREATE INDEX IF NOT EXISTS transfers_amount_idx on transfers (amount);
