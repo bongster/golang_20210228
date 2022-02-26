@@ -1,7 +1,12 @@
 package api
 
-import "fmt"
+import "github.com/gin-gonic/gin"
 
 func Run() {
-	fmt.Println("Running API server started")
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 }
