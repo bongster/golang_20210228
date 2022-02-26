@@ -1,0 +1,8 @@
+version: "3.7"
+
+services:
+  api:
+    build: .
+    volumes:
+      - ./src:/usr/src/app
+    command: air main api
