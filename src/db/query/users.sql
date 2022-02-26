@@ -8,7 +8,7 @@ WHERE username = $1 LIMIT 1;
 
 -- name: ListUsers :many
 SELECT * FROM users
-ORDER BY name;
+ORDER BY id;
 
 -- name: DeleteUser :exec
 DELETE FROM users
