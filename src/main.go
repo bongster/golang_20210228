@@ -32,7 +32,7 @@ func main() {
 			{
 				Name: "migration",
 				Action: func(c *cli.Context) error {
-					migration.Run()
+					migration.Run("postgres://postgres:postgres@db:5432/payments?sslmode=disable", "file://./db/migration")
 					return nil
 				},
 			},

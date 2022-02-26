@@ -12,8 +12,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func Run() {
-	db, err := sql.Open("postgres", "postgres://postgres:postgres@db:5432/payments?sslmode=disable")
+func Run(dbPath string, migrationPath string) {
+	db, err := sql.Open("postgres", dbPath)
 	if err != nil {
 		log.Fatalln(err.Error())
 		os.Exit(1)
@@ -26,17 +26,12 @@ func Run() {
 		return
 	}
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://./db/migration",
+		migrationPath,
 		"postgres", driver)
 	if err != nil {
 		log.Fatalln(err.Error())
 		os.Exit(1)
 		return
 	}
-	err = m.Up()
-	if err != nil {
-		log.Fatalln(err.Error())
-		os.Exit(1)
-		return
-	}
+	m.Up()
 }
