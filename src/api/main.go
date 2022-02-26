@@ -65,6 +65,7 @@ func Run() {
 			"message": "pong",
 		})
 	})
+
 	meRouter := r.Group("/me")
 	// 	swagger:route GET /me me me
 	// 		Responses:
