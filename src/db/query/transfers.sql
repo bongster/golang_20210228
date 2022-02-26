@@ -2,10 +2,6 @@
 SELECT * FROM transfers
 WHERE id = $1 LIMIT 1;
 
--- name: GetTransferByUserId :one
-SELECT * FROM transfers
-WHERE user_id = $1 LIMIT 1;
-
 -- name: ListTransfers :many
 SELECT * FROM transfers
 ORDER BY id;
@@ -16,8 +12,8 @@ WHERE id = $1;
 
 -- name: CreatTransfer :one
 INSERT INTO transfers (
-    user_id,
-    transfer_type,
+    from_user_id,
+    to_user_id,
     status,
     amount
 ) VALUES (

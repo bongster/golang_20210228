@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS users(
 
 CREATE TABLE IF NOT EXISTS transfers(
    id serial PRIMARY KEY,
-   user_id integer not null references users,
-   transfer_type varchar(255) not null,
+   from_user_id integer not null references users,
+   to_user_id integer not null references users,
    status varchar(50) not null,
    amount bigint NOT NULL,
    created_at timestamptz NOT NULL DEFAULT (now()),

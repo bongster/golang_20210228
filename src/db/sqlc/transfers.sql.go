@@ -9,34 +9,34 @@ import (
 
 const creatTransfer = `-- name: CreatTransfer :one
 INSERT INTO transfers (
-    user_id,
-    transfer_type,
+    from_user_id,
+    to_user_id,
     status,
     amount
 ) VALUES (
     $1, $2, $3, $4
-) RETURNING id, user_id, transfer_type, status, amount, created_at, updated_at
+) RETURNING id, from_user_id, to_user_id, status, amount, created_at, updated_at
 `
 
 type CreatTransferParams struct {
-	UserID       int32  `json:"user_id"`
-	TransferType string `json:"transfer_type"`
-	Status       string `json:"status"`
-	Amount       int64  `json:"amount"`
+	FromUserID int32  `json:"from_user_id"`
+	ToUserID   int32  `json:"to_user_id"`
+	Status     string `json:"status"`
+	Amount     int64  `json:"amount"`
 }
 
 func (q *Queries) CreatTransfer(ctx context.Context, arg CreatTransferParams) (Transfer, error) {
 	row := q.db.QueryRowContext(ctx, creatTransfer,
-		arg.UserID,
-		arg.TransferType,
+		arg.FromUserID,
+		arg.ToUserID,
 		arg.Status,
 		arg.Amount,
 	)
 	var i Transfer
 	err := row.Scan(
 		&i.ID,
-		&i.UserID,
-		&i.TransferType,
+		&i.FromUserID,
+		&i.ToUserID,
 		&i.Status,
 		&i.Amount,
 		&i.CreatedAt,
@@ -56,7 +56,7 @@ func (q *Queries) DeletTransfer(ctx context.Context, id int32) error {
 }
 
 const getTransfer = `-- name: GetTransfer :one
-SELECT id, user_id, transfer_type, status, amount, created_at, updated_at FROM transfers
+SELECT id, from_user_id, to_user_id, status, amount, created_at, updated_at FROM transfers
 WHERE id = $1 LIMIT 1
 `
 
@@ -65,28 +65,8 @@ func (q *Queries) GetTransfer(ctx context.Context, id int32) (Transfer, error) {
 	var i Transfer
 	err := row.Scan(
 		&i.ID,
-		&i.UserID,
-		&i.TransferType,
-		&i.Status,
-		&i.Amount,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
-}
-
-const getTransferByUserId = `-- name: GetTransferByUserId :one
-SELECT id, user_id, transfer_type, status, amount, created_at, updated_at FROM transfers
-WHERE user_id = $1 LIMIT 1
-`
-
-func (q *Queries) GetTransferByUserId(ctx context.Context, userID int32) (Transfer, error) {
-	row := q.db.QueryRowContext(ctx, getTransferByUserId, userID)
-	var i Transfer
-	err := row.Scan(
-		&i.ID,
-		&i.UserID,
-		&i.TransferType,
+		&i.FromUserID,
+		&i.ToUserID,
 		&i.Status,
 		&i.Amount,
 		&i.CreatedAt,
@@ -96,7 +76,7 @@ func (q *Queries) GetTransferByUserId(ctx context.Context, userID int32) (Transf
 }
 
 const listTransfers = `-- name: ListTransfers :many
-SELECT id, user_id, transfer_type, status, amount, created_at, updated_at FROM transfers
+SELECT id, from_user_id, to_user_id, status, amount, created_at, updated_at FROM transfers
 ORDER BY id
 `
 
@@ -111,8 +91,8 @@ func (q *Queries) ListTransfers(ctx context.Context) ([]Transfer, error) {
 		var i Transfer
 		if err := rows.Scan(
 			&i.ID,
-			&i.UserID,
-			&i.TransferType,
+			&i.FromUserID,
+			&i.ToUserID,
 			&i.Status,
 			&i.Amount,
 			&i.CreatedAt,

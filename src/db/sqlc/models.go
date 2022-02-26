@@ -7,13 +7,13 @@ import (
 )
 
 type Transfer struct {
-	ID           int32     `json:"id"`
-	UserID       int32     `json:"user_id"`
-	TransferType string    `json:"transfer_type"`
-	Status       string    `json:"status"`
-	Amount       int64     `json:"amount"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	ID         int32     `json:"id"`
+	FromUserID int32     `json:"from_user_id"`
+	ToUserID   int32     `json:"to_user_id"`
+	Status     string    `json:"status"`
+	Amount     int64     `json:"amount"`
+	CreatedAt  time.Time `json:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at"`
 }
 
 type User struct {
