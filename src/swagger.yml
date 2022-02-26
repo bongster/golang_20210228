@@ -1,0 +1,103 @@
+basePath: /
+consumes:
+- application/json
+info:
+  description: Documentation for Payment API
+  title: Payment API.
+  version: 1.0.0
+paths:
+  /me:
+    get:
+      operationId: me
+      responses:
+        "200":
+          $ref: '#/responses/someResponse'
+        default:
+          $ref: '#/responses/genericError'
+      tags:
+      - me
+  /me/balance:
+    get:
+      operationId: meBlanace
+      responses:
+        "200":
+          $ref: '#/responses/someResponse'
+        default:
+          $ref: '#/responses/genericError'
+      tags:
+      - me
+  /me/transactions:
+    get:
+      operationId: meTransactions
+      responses:
+        "200":
+          $ref: '#/responses/someResponse'
+        default:
+          $ref: '#/responses/genericError'
+      tags:
+      - me
+  /transactions:
+    get:
+      operationId: listTransactions
+      responses:
+        "200":
+          $ref: '#/responses/someResponse'
+        default:
+          $ref: '#/responses/genericError'
+      tags:
+      - transactions
+  /users:
+    get:
+      operationId: listUsers
+      responses:
+        "200":
+          $ref: '#/responses/someResponse'
+        default:
+          $ref: '#/responses/genericError'
+      tags:
+      - users
+produces:
+- application/json
+responses:
+  genericError:
+    description: ""
+    schema:
+      properties:
+        Error:
+          description: An optional field name to which this validation applies
+          type: string
+        Message:
+          description: The validation message
+          example: Expected type int
+          type: string
+      required:
+      - Message
+      type: object
+  someResponse:
+    description: ""
+    schema:
+      properties:
+        Message:
+          description: The validation message
+          example: Expected type int
+          type: string
+      required:
+      - Message
+      type: object
+  validationError:
+    description: ""
+    schema:
+      properties:
+        FieldName:
+          description: An optional field name to which this validation applies
+          type: string
+        Message:
+          description: The validation message
+          example: Expected type int
+          type: string
+      required:
+      - Message
+      type: object
+schemes:
+- http
+swagger: "2.0"
