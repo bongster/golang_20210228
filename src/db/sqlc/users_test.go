@@ -9,13 +9,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCreateUser(t *testing.T) {
+func createNewUser() (User, error) {
 	hash, _ := util.HashPassword("password")
 	arg := CreateUserParams{
 		Username: fmt.Sprintf("daniel_%s", util.RandomString(10)),
 		Password: hash,
+		Balance:  0,
 	}
-	user, err := testQueries.CreateUser(context.Background(), arg)
+	return testQueries.CreateUser(context.Background(), arg)
+
+}
+func TestCreateUser(t *testing.T) {
+	user, err := createNewUser()
 	require.NoError(t, err)
 	require.NotEmpty(t, user.ID)
 	require.Equal(t, user.Username, user.Username)
@@ -27,12 +32,7 @@ func TestListUser(t *testing.T) {
 }
 
 func TestGetUser(t *testing.T) {
-	hash, _ := util.HashPassword("password")
-	arg := CreateUserParams{
-		Username: fmt.Sprintf("daniel_%s", util.RandomString(10)),
-		Password: hash,
-	}
-	user, _ := testQueries.CreateUser(context.Background(), arg)
+	user, _ := createNewUser()
 	u2, err := testQueries.GetUser(context.Background(), user.ID)
 	require.NoError(t, err)
 	require.Equal(t, user.ID, u2.ID)

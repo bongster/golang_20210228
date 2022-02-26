@@ -2,23 +2,26 @@
 
 package db
 
-import ()
-
-type Balance struct {
-	ID      int32  `json:"id"`
-	UserID  int32  `json:"user_id"`
-	Balance string `json:"balance"`
-}
+import (
+	"time"
+)
 
 type Transaction struct {
-	ID              int32  `json:"id"`
-	UserID          int32  `json:"user_id"`
-	TransactionType string `json:"transaction_type"`
-	Amount          string `json:"amount"`
+	ID              int32     `json:"id"`
+	UserID          int32     `json:"user_id"`
+	TransactionType string    `json:"transaction_type"`
+	Status          string    `json:"status"`
+	Amount          int64     `json:"amount"`
+	CreatedAt       time.Time `json:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at"`
 }
 
 type User struct {
-	ID       int32  `json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	ID        int32     `json:"id"`
+	Username  string    `json:"username"`
+	Password  string    `json:"password"`
+	Balance   int64     `json:"balance"`
+	Curreny   string    `json:"curreny"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

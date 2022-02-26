@@ -10,21 +10,38 @@ import (
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (
     username,
-    password
+    password,
+    balance,
+    curreny
 ) VALUES (
-    $1, $2
-) RETURNING id, username, password
+    $1, $2, $3, $4
+) RETURNING id, username, password, balance, curreny, created_at, updated_at
 `
 
 type CreateUserParams struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
+	Balance  int64  `json:"balance"`
+	Curreny  string `json:"curreny"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, createUser, arg.Username, arg.Password)
+	row := q.db.QueryRowContext(ctx, createUser,
+		arg.Username,
+		arg.Password,
+		arg.Balance,
+		arg.Curreny,
+	)
 	var i User
-	err := row.Scan(&i.ID, &i.Username, &i.Password)
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.Password,
+		&i.Balance,
+		&i.Curreny,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
 	return i, err
 }
 
@@ -39,31 +56,47 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, username, password FROM users
+SELECT id, username, password, balance, curreny, created_at, updated_at FROM users
 WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUser, id)
 	var i User
-	err := row.Scan(&i.ID, &i.Username, &i.Password)
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.Password,
+		&i.Balance,
+		&i.Curreny,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
 	return i, err
 }
 
 const getUserByName = `-- name: GetUserByName :one
-SELECT id, username, password FROM users
+SELECT id, username, password, balance, curreny, created_at, updated_at FROM users
 WHERE username = $1 LIMIT 1
 `
 
 func (q *Queries) GetUserByName(ctx context.Context, username string) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUserByName, username)
 	var i User
-	err := row.Scan(&i.ID, &i.Username, &i.Password)
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.Password,
+		&i.Balance,
+		&i.Curreny,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
 	return i, err
 }
 
 const listUsers = `-- name: ListUsers :many
-SELECT id, username, password FROM users
+SELECT id, username, password, balance, curreny, created_at, updated_at FROM users
 ORDER BY id
 `
 
@@ -76,7 +109,15 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 	var items []User
 	for rows.Next() {
 		var i User
-		if err := rows.Scan(&i.ID, &i.Username, &i.Password); err != nil {
+		if err := rows.Scan(
+			&i.ID,
+			&i.Username,
+			&i.Password,
+			&i.Balance,
+			&i.Curreny,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

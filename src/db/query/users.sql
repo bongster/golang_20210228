@@ -17,7 +17,9 @@ WHERE id = $1;
 -- name: CreateUser :one
 INSERT INTO users (
     username,
-    password
+    password,
+    balance,
+    curreny
 ) VALUES (
-    $1, $2
+    $1, $2, $3, $4
 ) RETURNING *;
