@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/bongster/golang_20210228/api"
+	"github.com/bongster/golang_20210228/migration"
 	"github.com/bongster/golang_20210228/worker"
 	"github.com/urfave/cli/v2"
 )
@@ -25,6 +26,13 @@ func main() {
 				Name: "worker",
 				Action: func(c *cli.Context) error {
 					worker.Run()
+					return nil
+				},
+			},
+			{
+				Name: "migration",
+				Action: func(c *cli.Context) error {
+					migration.Run()
 					return nil
 				},
 			},
