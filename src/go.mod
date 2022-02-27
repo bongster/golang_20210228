@@ -54,6 +54,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-openapi/runtime v0.23.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang-migrate/migrate/v4 v4.15.1
 	github.com/lib/pq v1.10.4
 	github.com/russross/blackfriday/v2 v2.0.1 // indirect
