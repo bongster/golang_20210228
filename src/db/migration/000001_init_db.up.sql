@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS users(
    username VARCHAR (50) UNIQUE NOT NULL,
    password VARCHAR (255) NOT NULL,
    balance bigint NOT NULL,
-   curreny VARCHAR (3) NOT NULL,
+   currency VARCHAR (3) NOT NULL,
    created_at timestamptz NOT NULL DEFAULT (now()),
    updated_at timestamptz NOT NULL DEFAULT (now())
 );

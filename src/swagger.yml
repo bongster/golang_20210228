@@ -1,64 +1,110 @@
 basePath: /
 consumes:
 - application/json
+definitions:
+  User:
+    properties:
+      balance:
+        format: int64
+        type: integer
+        x-go-name: Balance
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      currency:
+        type: string
+        x-go-name: Currency
+      id:
+        format: int32
+        type: integer
+        x-go-name: ID
+      password:
+        type: string
+        x-go-name: Password
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+      username:
+        type: string
+        x-go-name: Username
+    type: object
+    x-go-package: github.com/bongster/golang_20210228/db/sqlc
+  createUserRequest:
+    description: createUserRequest user request parameter
+    properties:
+      currency:
+        type: string
+        x-go-name: Currency
+      password:
+        type: string
+        x-go-name: Password
+      username:
+        type: string
+        x-go-name: Username
+    type: object
+    x-go-package: github.com/bongster/golang_20210228/api
 info:
   description: Documentation for Payment API
   title: Payment API.
   version: 1.0.0
 paths:
-  /me:
-    get:
-      operationId: me
-      responses:
-        "200":
-          $ref: '#/responses/someResponse'
-        default:
-          $ref: '#/responses/genericError'
-      tags:
-      - me
-  /me/balance:
-    get:
-      operationId: meBlanace
-      responses:
-        "200":
-          $ref: '#/responses/someResponse'
-        default:
-          $ref: '#/responses/genericError'
-      tags:
-      - me
-  /me/transactions:
-    get:
-      operationId: meTransactions
-      responses:
-        "200":
-          $ref: '#/responses/someResponse'
-        default:
-          $ref: '#/responses/genericError'
-      tags:
-      - me
-  /transactions:
-    get:
-      operationId: listTransactions
-      responses:
-        "200":
-          $ref: '#/responses/someResponse'
-        default:
-          $ref: '#/responses/genericError'
-      tags:
-      - transactions
   /users:
     get:
-      operationId: listUsers
+      operationId: listUser
       responses:
         "200":
-          $ref: '#/responses/someResponse'
-        default:
-          $ref: '#/responses/genericError'
+          $ref: '#/responses/listUserResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+      tags:
+      - users
+    post:
+      operationId: createUser
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/createUserRequest'
+      responses:
+        "200":
+          $ref: '#/responses/createUserResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+      tags:
+      - users
+  /users/{id}:
+    get:
+      operationId: getUser
+      parameters:
+      - format: int32
+        in: path
+        name: id
+        required: true
+        type: integer
+        x-go-name: ID
+      responses:
+        "200":
+          $ref: '#/responses/getUserResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
       tags:
       - users
 produces:
 - application/json
 responses:
+  badRequestResponse:
+    description: badRequestResponse response structure after invalid input from body
+    schema:
+      type: object
+  createUserResponse:
+    description: createUserResponse response structure after success create user
+    schema:
+      items:
+        $ref: '#/definitions/User'
+      type: array
   genericError:
     description: ""
     schema:
@@ -73,6 +119,16 @@ responses:
       required:
       - Message
       type: object
+  getUserResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/User'
+  listUserResponse:
+    description: ""
+    schema:
+      items:
+        $ref: '#/definitions/User'
+      type: array
   someResponse:
     description: ""
     schema:

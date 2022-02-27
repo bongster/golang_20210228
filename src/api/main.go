@@ -13,7 +13,14 @@
 // swagger:meta
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"database/sql"
+	"log"
+	"os"
+
+	db "github.com/bongster/golang_20210228/db/sqlc"
+	_ "github.com/lib/pq"
+)
 
 // swagger:response validationError
 type ValidationError struct {
@@ -58,62 +65,23 @@ type someResponse struct {
 	}
 }
 
+const (
+	dbDriver      = "postgres"
+	dbSource      = "postgres://postgres:postgres@db:5432/payments?sslmode=disable"
+	serverAddress = "0.0.0.0:8080"
+)
+
+// Run HTTP api server
 func Run() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
-	meRouter := r.Group("/me")
-	// 	swagger:route GET /me me me
-	// 		Responses:
-	// 			default: genericError
-	// 			200: someResponse
-	meRouter.GET("/", func(c *gin.Context) {
-		me := make(map[string]interface{}, 0)
-		c.JSON(200, me)
-	})
-
-	// swagger:route GET /me/balance me meBlanace
-	// 		Responses:
-	// 			default: genericError
-	// 			200: someResponse
-	meRouter.GET("/balance", func(c *gin.Context) {
-		balance := make(map[string]interface{}, 0)
-		c.JSON(200, balance)
-	})
-
-	// swagger:route GET /me/transactions me meTransactions
-	// 		Responses:
-	// 			default: genericError
-	// 			200: someResponse
-	meRouter.GET("/transactions", func(c *gin.Context) {
-		transactions := make([]map[string]interface{}, 0)
-		c.JSON(200, transactions)
-	})
-
-	// User API router
-	userRouter := r.Group("/users")
-	// swagger:route GET /users users listUsers
-	// 		Responses:
-	// 			default: genericError
-	// 			200: someResponse
-	userRouter.GET("/", func(c *gin.Context) {
-		users := make([]map[string]interface{}, 0)
-		c.JSON(200, users)
-	})
-
-	// Transaction router
-	transactionRouter := r.Group("/transactions")
-	// swagger:route GET /transactions transactions listTransactions
-	// 		Responses:
-	// 			default: genericError
-	// 			200: someResponse
-	transactionRouter.GET("/", func(c *gin.Context) {
-		transactions := make([]map[string]interface{}, 0)
-		c.JSON(200, transactions)
-	})
-	r.Run()
+	conn, err := sql.Open(dbDriver, dbSource)
+	if err != nil {
+		log.Fatalln(err)
+		os.Exit(1)
+	}
+	store := db.NewStore(conn)
+	server := NewServer(store)
+	err = server.Start(serverAddress)
+	if err != nil {
+		log.Fatalln("can not start server:", err)
+	}
 }

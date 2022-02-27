@@ -21,7 +21,7 @@ type User struct {
 	Username  string    `json:"username"`
 	Password  string    `json:"password"`
 	Balance   int64     `json:"balance"`
-	Curreny   string    `json:"curreny"`
+	Currency  string    `json:"currency"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
