@@ -18,11 +18,8 @@ func NewServer(store *db.Store) *Server {
 	}
 	r := gin.Default()
 
-	// swagger:route POST /users users createUser
-	// 	Response:
-	// 		default: genericError
-	// 		200: somResponse
 	r.POST("/users", server.createUser)
+	r.GET("/users/:id", server.getUser)
 
 	server.router = r
 	return server
