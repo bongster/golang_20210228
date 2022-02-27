@@ -104,11 +104,54 @@ definitions:
         x-go-name: Username
     type: object
     x-go-package: github.com/bongster/golang_20210228/api
+  loginUserRequest:
+    description: loginUserRequest user login request parameter
+    properties:
+      password:
+        type: string
+        x-go-name: Password
+      username:
+        type: string
+        x-go-name: Username
+    type: object
+    x-go-package: github.com/bongster/golang_20210228/api
 info:
   description: Documentation for Payment API
   title: Payment API.
   version: 1.0.0
 paths:
+  /login:
+    get:
+      operationId: loginUser
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/loginUserRequest'
+      responses:
+        "200":
+          $ref: '#/responses/loginUserResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+      tags:
+      - users
+  /register:
+    post:
+      operationId: createUser
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/createUserRequest'
+      responses:
+        "200":
+          $ref: '#/responses/createUserResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+      tags:
+      - users
   /transfers:
     post:
       operationId: createTransfer
@@ -131,21 +174,6 @@ paths:
       responses:
         "200":
           $ref: '#/responses/listUserResponse'
-        "400":
-          $ref: '#/responses/badRequestResponse'
-      tags:
-      - users
-    post:
-      operationId: createUser
-      parameters:
-      - in: body
-        name: Body
-        required: true
-        schema:
-          $ref: '#/definitions/createUserRequest'
-      responses:
-        "200":
-          $ref: '#/responses/createUserResponse'
         "400":
           $ref: '#/responses/badRequestResponse'
       tags:
@@ -206,6 +234,11 @@ responses:
       items:
         $ref: '#/definitions/User'
       type: array
+  loginUserResponse:
+    description: ""
+    headers:
+      access_token:
+        type: string
   someResponse:
     description: ""
     schema:
@@ -233,4 +266,9 @@ responses:
       type: object
 schemes:
 - http
+securityDefinitions:
+  authorization:
+    in: header
+    name: KEY
+    type: apiKey
 swagger: "2.0"

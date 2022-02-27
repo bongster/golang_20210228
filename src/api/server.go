@@ -27,13 +27,12 @@ func NewServer(store *db.Store) *Server {
 	}
 	router := gin.Default()
 	router.POST("/login", server.loginUser)
+	router.POST("/register", server.createUser)
 
-	privateRouter := router.Group("/")
+	privateRouter := router.Group("/").Use(authMiddleware(maker))
 	{
-		privateRouter.POST("/users", server.createUser)
 		privateRouter.GET("/users/:id", server.getUser)
 		privateRouter.GET("/users", server.listUsers)
-
 		privateRouter.POST("/transfers", server.createTransfer)
 	}
 
