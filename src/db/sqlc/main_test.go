@@ -17,22 +17,25 @@ const (
 )
 
 var testQueries *Queries
+var testDB *sql.DB
 
 func SetUpTestDB() {
 	conninfo := "user=postgres password=postgres host=localhost sslmode=disable"
-	db, err := sql.Open("postgres", conninfo)
+	var err error
+	testDB, err = sql.Open("postgres", conninfo)
 	if err != nil {
 		log.Fatal("can't connect to db:", err)
 	}
-	db.Exec("CREATE DATABASE " + dbName)
+	testDB.Exec("CREATE DATABASE " + dbName)
 }
 func TestMain(m *testing.M) {
 	SetUpTestDB()
-	conn, err := sql.Open(dbDriver, dbSource)
+	var err error
+	testDB, err = sql.Open(dbDriver, dbSource)
 	if err != nil {
 		log.Fatal("can't connect to db:", err)
 	}
-	testQueries = New(conn)
+	testQueries = New(testDB)
 
 	migration.Run(dbSource, "file://../../db/migration")
 
