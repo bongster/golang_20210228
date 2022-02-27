@@ -104,3 +104,21 @@ func (server *Server) getUser(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, user)
 }
+
+// swagger:response listUserResponse
+type listUserResponse struct {
+	// in: body
+	Body []db.User
+}
+
+// 	swagger:route GET /users users listUser
+// 		Responses:
+// 			200: listUserResponse
+// 			400: badRequestResponse
+func (server *Server) listUsers(ctx *gin.Context) {
+	users, err := server.store.ListUsers(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+	}
+	ctx.JSON(http.StatusOK, users)
+}

@@ -51,6 +51,15 @@ info:
   version: 1.0.0
 paths:
   /users:
+    get:
+      operationId: listUser
+      responses:
+        "200":
+          $ref: '#/responses/listUserResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+      tags:
+      - users
     post:
       operationId: createUser
       parameters:
@@ -114,6 +123,12 @@ responses:
     description: ""
     schema:
       $ref: '#/definitions/User'
+  listUserResponse:
+    description: ""
+    schema:
+      items:
+        $ref: '#/definitions/User'
+      type: array
   someResponse:
     description: ""
     schema:

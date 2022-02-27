@@ -30,6 +30,7 @@ Documentation for Payment API
 |---------|---------|--------|---------|
 | POST | /users | [create user](#create-user) |  |
 | GET | /users/{id} | [get user](#get-user) |  |
+| GET | /users | [list user](#list-user) |  |
   
 
 
@@ -108,6 +109,39 @@ Status: OK
 Status: Bad Request
 
 ###### <span id="get-user-400-schema"></span> Schema
+   
+  
+
+any
+
+### <span id="list-user"></span> list user (*listUser*)
+
+```
+GET /users
+```
+
+#### All responses
+| Code | Status | Description | Has headers | Schema |
+|------|--------|-------------|:-----------:|--------|
+| [200](#list-user-200) | OK |  |  | [schema](#list-user-200-schema) |
+| [400](#list-user-400) | Bad Request | badRequestResponse response structure after invalid input from body |  | [schema](#list-user-400-schema) |
+
+#### Responses
+
+
+##### <span id="list-user-200"></span> 200
+Status: OK
+
+###### <span id="list-user-200-schema"></span> Schema
+   
+  
+
+[][User](#user)
+
+##### <span id="list-user-400"></span> 400 - badRequestResponse response structure after invalid input from body
+Status: Bad Request
+
+###### <span id="list-user-400-schema"></span> Schema
    
   
 
