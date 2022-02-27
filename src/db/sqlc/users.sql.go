@@ -12,17 +12,17 @@ INSERT INTO users (
     username,
     password,
     balance,
-    curreny
+    currency
 ) VALUES (
     $1, $2, $3, $4
-) RETURNING id, username, password, balance, curreny, created_at, updated_at
+) RETURNING id, username, password, balance, currency, created_at, updated_at
 `
 
 type CreateUserParams struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Balance  int64  `json:"balance"`
-	Curreny  string `json:"curreny"`
+	Currency string `json:"currency"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
@@ -30,7 +30,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		arg.Username,
 		arg.Password,
 		arg.Balance,
-		arg.Curreny,
+		arg.Currency,
 	)
 	var i User
 	err := row.Scan(
@@ -38,7 +38,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.Username,
 		&i.Password,
 		&i.Balance,
-		&i.Curreny,
+		&i.Currency,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -56,7 +56,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, username, password, balance, curreny, created_at, updated_at FROM users
+SELECT id, username, password, balance, currency, created_at, updated_at FROM users
 WHERE id = $1 LIMIT 1
 `
 
@@ -68,7 +68,7 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 		&i.Username,
 		&i.Password,
 		&i.Balance,
-		&i.Curreny,
+		&i.Currency,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -76,7 +76,7 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 }
 
 const getUserByName = `-- name: GetUserByName :one
-SELECT id, username, password, balance, curreny, created_at, updated_at FROM users
+SELECT id, username, password, balance, currency, created_at, updated_at FROM users
 WHERE username = $1 LIMIT 1
 `
 
@@ -88,7 +88,7 @@ func (q *Queries) GetUserByName(ctx context.Context, username string) (User, err
 		&i.Username,
 		&i.Password,
 		&i.Balance,
-		&i.Curreny,
+		&i.Currency,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -96,7 +96,7 @@ func (q *Queries) GetUserByName(ctx context.Context, username string) (User, err
 }
 
 const listUsers = `-- name: ListUsers :many
-SELECT id, username, password, balance, curreny, created_at, updated_at FROM users
+SELECT id, username, password, balance, currency, created_at, updated_at FROM users
 ORDER BY id
 `
 
@@ -114,7 +114,7 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 			&i.Username,
 			&i.Password,
 			&i.Balance,
-			&i.Curreny,
+			&i.Currency,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 		); err != nil {

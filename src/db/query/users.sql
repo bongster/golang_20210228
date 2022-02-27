@@ -19,7 +19,7 @@ INSERT INTO users (
     username,
     password,
     balance,
-    curreny
+    currency
 ) VALUES (
     $1, $2, $3, $4
 ) RETURNING *;

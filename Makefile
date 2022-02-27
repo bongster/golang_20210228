@@ -1,5 +1,7 @@
 .PHONY: all
 
+check-sqlc:
+	which sqlc || brew install sqlc
 check-install:
 	which swagger || GO11MOBULE=off go get -u github.com/go-swagger/go-swagger/cmd/swagger
 
@@ -11,5 +13,5 @@ swagger: check-install
 
 test:
 	go test -v -cover ./src/...
-sqlc:
+sqlc: check-sqlc
 	sqlc generate -f src/sqlc.yaml
