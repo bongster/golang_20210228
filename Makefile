@@ -8,3 +8,8 @@ docs: check-install
 
 swagger: check-install
 	GO11MOBULE=off swagger generate spec -w ./src -o ./src/swagger.yml --scan-models
+
+test:
+	go test -v -cover ./src/...
+sqlc:
+	sqlc generate -f src/sqlc.yaml
