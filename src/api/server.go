@@ -3,6 +3,7 @@ package api
 import (
 	db "github.com/bongster/golang_20210228/db/sqlc"
 	"github.com/gin-gonic/gin"
+	"github.com/go-openapi/runtime/middleware"
 )
 
 // Server servers HTTP requests for our service
@@ -23,6 +24,12 @@ func NewServer(store *db.Store) *Server {
 	r.GET("/users", server.listUsers)
 
 	r.POST("/transfers", server.createTransfer)
+
+	// Set Doucumentation
+	opts := middleware.RedocOpts{SpecURL: "./swagger.yml"}
+	sh := middleware.Redoc(opts, nil)
+	r.GET("/docs", gin.WrapH(sh))
+	r.StaticFile("/swagger.yml", "./swagger.yml")
 
 	server.router = r
 	return server
