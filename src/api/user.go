@@ -3,6 +3,7 @@ package api
 import (
 	"database/sql"
 	"net/http"
+	"time"
 
 	db "github.com/bongster/golang_20210228/db/sqlc"
 	"github.com/bongster/golang_20210228/util"
@@ -121,4 +122,56 @@ func (server *Server) listUsers(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 	}
 	ctx.JSON(http.StatusOK, users)
+}
+
+// loginUserRequest user login request parameter
+type loginUserRequest struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
+// Req swagger parameters used in loginUser
+// swagger:parameters loginUser
+type loginUserReq struct {
+	// in: body
+	// required: true
+	Body loginUserRequest
+}
+
+// swagger:response loginUserResponse
+type loginUserResponse struct {
+	AccessToken string `json:"access_token"`
+}
+
+// 	swagger:route GET /login common loginUser
+// 		Responses:
+// 			200: loginUserResponse
+// 			400: badRequestResponse
+func (server *Server) loginUser(ctx *gin.Context) {
+	var req loginUserRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+	user, err := server.store.GetUserByName(ctx, req.Username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+	}
+	if err := util.CheckPasswordHash(req.Password, user.Password); err != nil {
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
+	}
+	token, err := server.tokenMaker.CreateToken(user.Username, 15*time.Minute)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	res := loginUserResponse{
+		AccessToken: token,
+	}
+	ctx.JSON(http.StatusOK, res)
 }

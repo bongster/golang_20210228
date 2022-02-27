@@ -2,36 +2,48 @@ package api
 
 import (
 	db "github.com/bongster/golang_20210228/db/sqlc"
+	"github.com/bongster/golang_20210228/token"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/runtime/middleware"
 )
 
 // Server servers HTTP requests for our service
 type Server struct {
-	store  *db.Store
-	router *gin.Engine
+	store      *db.Store
+	router     *gin.Engine
+	tokenMaker token.Maker
 }
+
+const (
+	secretKey = "asdadfsadfsadfsadfs12321asdas"
+)
 
 // NewServer creates a new HTTP server and setup routing
 func NewServer(store *db.Store) *Server {
+	maker := token.NewJWTMaker(secretKey)
 	server := &Server{
-		store: store,
+		store:      store,
+		tokenMaker: maker,
 	}
-	r := gin.Default()
+	router := gin.Default()
+	router.POST("/login", server.loginUser)
 
-	r.POST("/users", server.createUser)
-	r.GET("/users/:id", server.getUser)
-	r.GET("/users", server.listUsers)
+	privateRouter := router.Group("/")
+	{
+		privateRouter.POST("/users", server.createUser)
+		privateRouter.GET("/users/:id", server.getUser)
+		privateRouter.GET("/users", server.listUsers)
 
-	r.POST("/transfers", server.createTransfer)
+		privateRouter.POST("/transfers", server.createTransfer)
+	}
 
 	// Set Doucumentation
 	opts := middleware.RedocOpts{SpecURL: "./swagger.yml"}
 	sh := middleware.Redoc(opts, nil)
-	r.GET("/docs", gin.WrapH(sh))
-	r.StaticFile("/swagger.yml", "./swagger.yml")
+	router.GET("/docs", gin.WrapH(sh))
+	router.StaticFile("/swagger.yml", "./swagger.yml")
 
-	server.router = r
+	server.router = router
 	return server
 }
 
