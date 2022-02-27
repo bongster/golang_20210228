@@ -1,1 +1,1 @@
-DROP UNIQUE INDEX IF EXISTS ON "users" ("username");
+DROP UNIQUE INDEX IF EXISTS users_username_key;
