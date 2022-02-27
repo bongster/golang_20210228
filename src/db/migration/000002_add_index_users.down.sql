@@ -1,0 +1,1 @@
+DROP UNIQUE INDEX IF EXISTS ON "users" ("username");
