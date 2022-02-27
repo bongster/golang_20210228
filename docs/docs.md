@@ -36,9 +36,10 @@ Documentation for Payment API
 
 | Method  | URI     | Name   | Summary |
 |---------|---------|--------|---------|
-| POST | /users | [create user](#create-user) |  |
+| POST | /register | [create user](#create-user) |  |
 | GET | /users/{id} | [get user](#get-user) |  |
 | GET | /users | [list user](#list-user) |  |
+| GET | /login | [login user](#login-user) |  |
   
 
 
@@ -86,7 +87,7 @@ any
 ### <span id="create-user"></span> create user (*createUser*)
 
 ```
-POST /users
+POST /register
 ```
 
 #### Parameters
@@ -194,6 +195,47 @@ Status: Bad Request
 
 any
 
+### <span id="login-user"></span> login user (*loginUser*)
+
+```
+GET /login
+```
+
+#### Parameters
+
+| Name | Source | Type | Go type | Separator | Required | Default | Description |
+|------|--------|------|---------|-----------| :------: |---------|-------------|
+| Body | `body` | [LoginUserRequest](#login-user-request) | `models.LoginUserRequest` | | ✓ | |  |
+
+#### All responses
+| Code | Status | Description | Has headers | Schema |
+|------|--------|-------------|:-----------:|--------|
+| [200](#login-user-200) | OK |  | ✓ | [schema](#login-user-200-schema) |
+| [400](#login-user-400) | Bad Request | badRequestResponse response structure after invalid input from body |  | [schema](#login-user-400-schema) |
+
+#### Responses
+
+
+##### <span id="login-user-200"></span> 200
+Status: OK
+
+###### <span id="login-user-200-schema"></span> Schema
+
+###### Response headers
+
+| Name | Type | Go type | Separator | Default | Description |
+|------|------|---------|-----------|---------|-------------|
+| access_token | string | `string` |  |  |  |
+
+##### <span id="login-user-400"></span> 400 - badRequestResponse response structure after invalid input from body
+Status: Bad Request
+
+###### <span id="login-user-400-schema"></span> Schema
+   
+  
+
+any
+
 ## Models
 
 ### <span id="transfer"></span> Transfer
@@ -293,6 +335,25 @@ any
 | Name | Type | Go type | Required | Default | Description | Example |
 |------|------|---------|:--------:| ------- |-------------|---------|
 | Currency | string| `string` |  | |  |  |
+| Password | string| `string` |  | |  |  |
+| Username | string| `string` |  | |  |  |
+
+
+
+### <span id="login-user-request"></span> loginUserRequest
+
+
+> loginUserRequest user login request parameter
+  
+
+
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
 | Password | string| `string` |  | |  |  |
 | Username | string| `string` |  | |  |  |
 

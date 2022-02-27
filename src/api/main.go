@@ -1,4 +1,4 @@
-// Package classification Payment API.
+// Package api classification Payment API.
 //
 // Documentation for Payment API
 //
@@ -10,6 +10,13 @@
 // - application/json
 // Produces:
 // - application/json
+// Security:
+// - authorization
+// SecurityDefinitions:
+// authorization:
+//   type: apiKey
+//   name: KEY
+//   in: header
 // swagger:meta
 package api
 
@@ -22,6 +29,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// ValidationError use this error when invalid data comming
 // swagger:response validationError
 type ValidationError struct {
 	// The error message
