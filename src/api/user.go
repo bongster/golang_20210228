@@ -41,7 +41,7 @@ type badRequestResponse struct {
 	}
 }
 
-// 	swagger:route POST /users users createUser
+// 	swagger:route POST /register users createUser
 // 		Responses:
 // 			200: createUserResponse
 // 			400: badRequestResponse
@@ -143,7 +143,7 @@ type loginUserResponse struct {
 	AccessToken string `json:"access_token"`
 }
 
-// 	swagger:route GET /login common loginUser
+// 	swagger:route GET /login users loginUser
 // 		Responses:
 // 			200: loginUserResponse
 // 			400: badRequestResponse
