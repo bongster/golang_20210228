@@ -56,15 +56,38 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 	var result TransferTXResult
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
+		// Checking user balance
+		user1, err := store.GetUser(ctx, arg.FromUserID)
+		user2, err := store.GetUser(ctx, arg.ToUserID)
+		if user1.Balance < arg.Amount {
+			return fmt.Errorf("user [%d] balance are not enough to send", user1.ID)
+		}
 		result.Transfer, err = q.CreatTransfer(ctx, CreatTransferParams{
 			FromUserID: arg.FromUserID,
-			ToUserID:   arg.FromUserID,
+			ToUserID:   arg.ToUserID,
 			Amount:     arg.Amount,
+			Status:     "DONE", // TODO: update if the transfer api are running asynchonized
 		})
 		if err != nil {
 			return err
 		}
 		// Update accounts balance
+		user1, err = store.UpdateUserBalance(ctx, UpdateUserBalanceParams{
+			ID:      user1.ID,
+			Balance: user1.Balance - arg.Amount,
+		})
+		result.FromUser = user1
+		if err != nil {
+			return err
+		}
+		user2, err = store.UpdateUserBalance(ctx, UpdateUserBalanceParams{
+			ID:      user2.ID,
+			Balance: user2.Balance + arg.Amount,
+		})
+		result.ToUser = user2
+		if err != nil {
+			return err
+		}
 		return nil
 	})
 	return result, err
