@@ -1,4 +1,4 @@
-// Package classification Payment API.
+// Package api classification Payment API.
 //
 // Documentation for Payment API
 //
@@ -29,6 +29,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// ValidationError use this error when invalid data comming
 // swagger:response validationError
 type ValidationError struct {
 	// The error message
