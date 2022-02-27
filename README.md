@@ -18,7 +18,7 @@ You have the luxury of proposing (not implementing) one killer feature in your a
 
 ### Documentation
 ------
-
+[go to documentation](./docs/docs.md)
 ### Tech Stacks
 ------
 
