@@ -2,6 +2,48 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  Transfer:
+    properties:
+      amount:
+        format: int64
+        type: integer
+        x-go-name: Amount
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      from_user_id:
+        format: int32
+        type: integer
+        x-go-name: FromUserID
+      id:
+        format: int32
+        type: integer
+        x-go-name: ID
+      status:
+        type: string
+        x-go-name: Status
+      to_user_id:
+        format: int32
+        type: integer
+        x-go-name: ToUserID
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/bongster/golang_20210228/db/sqlc
+  TransferTXResult:
+    description: TransferTXResult is the result of the transfer transaction
+    properties:
+      from_user:
+        $ref: '#/definitions/User'
+      to_user:
+        $ref: '#/definitions/User'
+      transfer:
+        $ref: '#/definitions/Transfer'
+    type: object
+    x-go-package: github.com/bongster/golang_20210228/db/sqlc
   User:
     properties:
       balance:
@@ -31,6 +73,23 @@ definitions:
         x-go-name: Username
     type: object
     x-go-package: github.com/bongster/golang_20210228/db/sqlc
+  createTransferRequest:
+    description: createTransferRequest user request parameter
+    properties:
+      amount:
+        format: int64
+        type: integer
+        x-go-name: Amount
+      from_user_id:
+        format: int32
+        type: integer
+        x-go-name: FromUserID
+      to_user_id:
+        format: int32
+        type: integer
+        x-go-name: ToUserID
+    type: object
+    x-go-package: github.com/bongster/golang_20210228/api
   createUserRequest:
     description: createUserRequest user request parameter
     properties:
@@ -50,6 +109,22 @@ info:
   title: Payment API.
   version: 1.0.0
 paths:
+  /transfers:
+    post:
+      operationId: createTransfer
+      parameters:
+      - in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/createTransferRequest'
+      responses:
+        "200":
+          $ref: '#/responses/createTransferResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+      tags:
+      - transfers
   /users:
     get:
       operationId: listUser
@@ -99,12 +174,14 @@ responses:
     description: badRequestResponse response structure after invalid input from body
     schema:
       type: object
+  createTransferResponse:
+    description: createTransferResponse response structure after success create user
+    schema:
+      $ref: '#/definitions/TransferTXResult'
   createUserResponse:
     description: createUserResponse response structure after success create user
     schema:
-      items:
-        $ref: '#/definitions/User'
-      type: array
+      $ref: '#/definitions/User'
   genericError:
     description: ""
     schema:

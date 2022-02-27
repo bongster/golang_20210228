@@ -28,7 +28,7 @@ type Req struct {
 // swagger:response createUserResponse
 type createUserResponse struct {
 	// in: body
-	Body []db.User
+	Body db.User
 }
 
 // badRequestResponse response structure after invalid input from body

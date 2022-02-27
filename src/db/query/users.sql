@@ -23,3 +23,8 @@ INSERT INTO users (
 ) VALUES (
     $1, $2, $3, $4
 ) RETURNING *;
+
+-- name: UpdateUserBalance :one
+UPDATE users SET balance = $2, updated_at = now()
+WHERE id = $1
+RETURNING *;

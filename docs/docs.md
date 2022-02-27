@@ -24,6 +24,14 @@ Documentation for Payment API
 
 ## All endpoints
 
+###  transfers
+
+| Method  | URI     | Name   | Summary |
+|---------|---------|--------|---------|
+| POST | /transfers | [create transfer](#create-transfer) |  |
+  
+
+
 ###  users
 
 | Method  | URI     | Name   | Summary |
@@ -35,6 +43,45 @@ Documentation for Payment API
 
 
 ## Paths
+
+### <span id="create-transfer"></span> create transfer (*createTransfer*)
+
+```
+POST /transfers
+```
+
+#### Parameters
+
+| Name | Source | Type | Go type | Separator | Required | Default | Description |
+|------|--------|------|---------|-----------| :------: |---------|-------------|
+| Body | `body` | [CreateTransferRequest](#create-transfer-request) | `models.CreateTransferRequest` | | ✓ | |  |
+
+#### All responses
+| Code | Status | Description | Has headers | Schema |
+|------|--------|-------------|:-----------:|--------|
+| [200](#create-transfer-200) | OK | createTransferResponse response structure after success create user |  | [schema](#create-transfer-200-schema) |
+| [400](#create-transfer-400) | Bad Request | badRequestResponse response structure after invalid input from body |  | [schema](#create-transfer-400-schema) |
+
+#### Responses
+
+
+##### <span id="create-transfer-200"></span> 200 - createTransferResponse response structure after success create user
+Status: OK
+
+###### <span id="create-transfer-200-schema"></span> Schema
+   
+  
+
+[TransferTXResult](#transfer-t-x-result)
+
+##### <span id="create-transfer-400"></span> 400 - badRequestResponse response structure after invalid input from body
+Status: Bad Request
+
+###### <span id="create-transfer-400-schema"></span> Schema
+   
+  
+
+any
 
 ### <span id="create-user"></span> create user (*createUser*)
 
@@ -64,7 +111,7 @@ Status: OK
    
   
 
-[][User](#user)
+[User](#user)
 
 ##### <span id="create-user-400"></span> 400 - badRequestResponse response structure after invalid input from body
 Status: Bad Request
@@ -149,6 +196,47 @@ any
 
 ## Models
 
+### <span id="transfer"></span> Transfer
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Amount | int64 (formatted integer)| `int64` |  | |  |  |
+| CreatedAt | date-time (formatted string)| `strfmt.DateTime` |  | |  |  |
+| FromUserID | int32 (formatted integer)| `int32` |  | |  |  |
+| ID | int32 (formatted integer)| `int32` |  | |  |  |
+| Status | string| `string` |  | |  |  |
+| ToUserID | int32 (formatted integer)| `int32` |  | |  |  |
+| UpdatedAt | date-time (formatted string)| `strfmt.DateTime` |  | |  |  |
+
+
+
+### <span id="transfer-t-x-result"></span> TransferTXResult
+
+
+> TransferTXResult is the result of the transfer transaction
+  
+
+
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| from_user | [User](#user)| `User` |  | |  |  |
+| to_user | [User](#user)| `User` |  | |  |  |
+| transfer | [Transfer](#transfer)| `Transfer` |  | |  |  |
+
+
+
 ### <span id="user"></span> User
 
 
@@ -167,6 +255,26 @@ any
 | Password | string| `string` |  | |  |  |
 | UpdatedAt | date-time (formatted string)| `strfmt.DateTime` |  | |  |  |
 | Username | string| `string` |  | |  |  |
+
+
+
+### <span id="create-transfer-request"></span> createTransferRequest
+
+
+> createTransferRequest user request parameter
+  
+
+
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Amount | int64 (formatted integer)| `int64` |  | |  |  |
+| FromUserID | int32 (formatted integer)| `int32` |  | |  |  |
+| ToUserID | int32 (formatted integer)| `int32` |  | |  |  |
 
 
 
