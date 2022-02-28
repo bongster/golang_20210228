@@ -3,6 +3,9 @@ Golang Sample project
 > Sample transfer money project
 
 
+![pipeline](https://github.com/bongster/golang_20210228/actions/workflows/go.yml/badge.svg)
+
+
 ### Requirements
 ------
 * User accesses the service through an authenticated HTTP-based API.
