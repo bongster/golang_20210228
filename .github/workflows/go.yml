@@ -41,9 +41,9 @@ jobs:
     - name: Run migrations
       run: cd src && go run main.go migration
       env:
-        DB_SOURCE: postgres://postgres:postgres@postgres:5432/testdb?sslmode=disable
+        DB_SOURCE: postgres://postgres:postgres@localhost:5432/testdb?sslmode=disable
     
     - name: Test
       run: cd src && make test
       env:
-        DB_SOURCE: postgres://postgres:postgres@postgres:5432/testdb?sslmode=disable
+        DB_SOURCE: postgres://postgres:postgres@localhost:5432/testdb?sslmode=disable
