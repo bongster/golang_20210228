@@ -9,6 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	authorizationPayloadKey = "payload"
+)
+
 func authMiddleware(tokenMaker token.Maker) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authroizationHeader := ctx.GetHeader("authorization")
