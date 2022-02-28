@@ -77,12 +77,29 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 		if err != nil {
 			return err
 		}
+		// Create entry by user
+		_, err = store.CreateEntry(ctx, CreateEntryParams{
+			UserID:   user1.ID,
+			Amount:   -arg.Amount,
+			Currency: user1.Currency,
+		})
+		if err != nil {
+			return err
+		}
+		// Create entry by user
+		_, err = store.CreateEntry(ctx, CreateEntryParams{
+			UserID:   user2.ID,
+			Amount:   arg.Amount,
+			Currency: user2.Currency,
+		})
+		if err != nil {
+			return err
+		}
 		// Update accounts balance
 		user1, err = store.UpdateUserBalance(ctx, UpdateUserBalanceParams{
 			ID:      user1.ID,
 			Balance: -arg.Amount,
 		})
-		result.FromUser = user1
 		if err != nil {
 			return err
 		}
@@ -90,10 +107,11 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 			ID:      user2.ID,
 			Balance: arg.Amount,
 		})
-		result.ToUser = user2
 		if err != nil {
 			return err
 		}
+		result.FromUser = user1
+		result.ToUser = user2
 		return nil
 	})
 	return result, err

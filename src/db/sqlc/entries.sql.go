@@ -37,6 +37,18 @@ func (q *Queries) CreateEntry(ctx context.Context, arg CreateEntryParams) (Entry
 	return i, err
 }
 
+const getCountEntry = `-- name: GetCountEntry :one
+SELECT count(id) FROM entries
+WHERE ($1::integer = 0 OR user_id = $1)
+`
+
+func (q *Queries) GetCountEntry(ctx context.Context, userID int32) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getCountEntry, userID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const getEntry = `-- name: GetEntry :one
 SELECT id, user_id, amount, currency, created_at, updated_at FROM entries
 WHERE id = $1 LIMIT 1

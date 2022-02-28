@@ -1,7 +1,7 @@
 
 
 
-# Payment API.
+# classification Payment API.
 Documentation for Payment API
   
 
@@ -23,6 +23,15 @@ Documentation for Payment API
   * application/json
 
 ## All endpoints
+
+###  entries
+
+| Method  | URI     | Name   | Summary |
+|---------|---------|--------|---------|
+| GET | /entries/{id} | [get entry](#get-entry) |  |
+| GET | /entries | [list entry](#list-entry) |  |
+  
+
 
 ###  transfers
 
@@ -123,6 +132,45 @@ Status: Bad Request
 
 any
 
+### <span id="get-entry"></span> get entry (*getEntry*)
+
+```
+GET /entries/{id}
+```
+
+#### Parameters
+
+| Name | Source | Type | Go type | Separator | Required | Default | Description |
+|------|--------|------|---------|-----------| :------: |---------|-------------|
+| id | `path` | int32 (formatted integer) | `int32` |  | ✓ |  |  |
+
+#### All responses
+| Code | Status | Description | Has headers | Schema |
+|------|--------|-------------|:-----------:|--------|
+| [200](#get-entry-200) | OK |  |  | [schema](#get-entry-200-schema) |
+| [400](#get-entry-400) | Bad Request | badRequestResponse response structure after invalid input from body |  | [schema](#get-entry-400-schema) |
+
+#### Responses
+
+
+##### <span id="get-entry-200"></span> 200
+Status: OK
+
+###### <span id="get-entry-200-schema"></span> Schema
+   
+  
+
+[Entry](#entry)
+
+##### <span id="get-entry-400"></span> 400 - badRequestResponse response structure after invalid input from body
+Status: Bad Request
+
+###### <span id="get-entry-400-schema"></span> Schema
+   
+  
+
+any
+
 ### <span id="get-user"></span> get user (*getUser*)
 
 ```
@@ -157,6 +205,39 @@ Status: OK
 Status: Bad Request
 
 ###### <span id="get-user-400-schema"></span> Schema
+   
+  
+
+any
+
+### <span id="list-entry"></span> list entry (*listEntry*)
+
+```
+GET /entries
+```
+
+#### All responses
+| Code | Status | Description | Has headers | Schema |
+|------|--------|-------------|:-----------:|--------|
+| [200](#list-entry-200) | OK | listEntyResponse return response type from /entries API |  | [schema](#list-entry-200-schema) |
+| [400](#list-entry-400) | Bad Request | badRequestResponse response structure after invalid input from body |  | [schema](#list-entry-400-schema) |
+
+#### Responses
+
+
+##### <span id="list-entry-200"></span> 200 - listEntyResponse return response type from /entries API
+Status: OK
+
+###### <span id="list-entry-200-schema"></span> Schema
+   
+  
+
+[][Entry](#entry)
+
+##### <span id="list-entry-400"></span> 400 - badRequestResponse response structure after invalid input from body
+Status: Bad Request
+
+###### <span id="list-entry-400-schema"></span> Schema
    
   
 
@@ -237,6 +318,26 @@ Status: Bad Request
 any
 
 ## Models
+
+### <span id="entry"></span> Entry
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Amount | int64 (formatted integer)| `int64` |  | |  |  |
+| CreatedAt | date-time (formatted string)| `strfmt.DateTime` |  | |  |  |
+| Currency | string| `string` |  | |  |  |
+| ID | int32 (formatted integer)| `int32` |  | |  |  |
+| UpdatedAt | date-time (formatted string)| `strfmt.DateTime` |  | |  |  |
+| UserID | int32 (formatted integer)| `int32` |  | |  |  |
+
+
 
 ### <span id="transfer"></span> Transfer
 

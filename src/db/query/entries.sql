@@ -8,6 +8,10 @@ WHERE
     (@user_id::integer = 0 OR user_id = @user_id)
 ORDER BY id;
 
+-- name: GetCountEntry :one
+SELECT count(id) FROM entries
+WHERE (@user_id::integer = 0 OR user_id = @user_id);
+
 -- name: CreateEntry :one
 INSERT INTO entries (
     user_id,
