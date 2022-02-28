@@ -26,6 +26,7 @@ import (
 	"os"
 
 	db "github.com/bongster/golang_20210228/db/sqlc"
+	"github.com/bongster/golang_20210228/util"
 	_ "github.com/lib/pq"
 )
 
@@ -81,14 +82,15 @@ const (
 
 // Run HTTP api server
 func Run() {
-	conn, err := sql.Open(dbDriver, dbSource)
+	config, err := util.LoadConfig(".")
+	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatalln(err)
 		os.Exit(1)
 	}
 	store := db.NewStore(conn)
-	server := NewServer(store)
-	err = server.Start(serverAddress)
+	server := NewServer(store, config)
+	err = server.Start(config.ServerAddress)
 	if err != nil {
 		log.Fatalln("can not start server:", err)
 	}

@@ -6,6 +6,7 @@ import (
 
 	"github.com/bongster/golang_20210228/api"
 	"github.com/bongster/golang_20210228/migration"
+	"github.com/bongster/golang_20210228/util"
 	"github.com/bongster/golang_20210228/worker"
 	"github.com/urfave/cli/v2"
 )
@@ -32,7 +33,8 @@ func main() {
 			{
 				Name: "migration",
 				Action: func(c *cli.Context) error {
-					migration.Run("postgres://postgres:postgres@db:5432/payments?sslmode=disable", "file://./db/migration")
+					config, _ := util.LoadConfig(".")
+					migration.Run(config.DBDriver, config.DBSource, "file://./db/migration")
 					return nil
 				},
 			},

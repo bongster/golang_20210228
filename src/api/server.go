@@ -3,6 +3,7 @@ package api
 import (
 	db "github.com/bongster/golang_20210228/db/sqlc"
 	"github.com/bongster/golang_20210228/token"
+	"github.com/bongster/golang_20210228/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/runtime/middleware"
 )
@@ -19,8 +20,8 @@ const (
 )
 
 // NewServer creates a new HTTP server and setup routing
-func NewServer(store *db.Store) *Server {
-	maker := token.NewJWTMaker(secretKey)
+func NewServer(store *db.Store, config util.Config) *Server {
+	maker := token.NewJWTMaker(config.SecretKey)
 	server := &Server{
 		store:      store,
 		tokenMaker: maker,

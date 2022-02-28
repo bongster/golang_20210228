@@ -12,6 +12,6 @@ swagger: check-install
 	GO11MODULE=off swagger generate spec -w ./src -o ./src/swagger.yml --scan-models
 
 test:
-	go test -v -cover ./src/...
+	go test -v -cover -timeout 40s ./src/...
 sqlc: check-sqlc
 	sqlc generate -f src/sqlc.yaml

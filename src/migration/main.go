@@ -12,8 +12,9 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func Run(dbPath string, migrationPath string) {
-	db, err := sql.Open("postgres", dbPath)
+// Run migrate change database schema
+func Run(dbDriver string, dbSource string, migrationPath string) {
+	db, err := sql.Open(dbDriver, dbSource)
 	if err != nil {
 		log.Fatalln(err.Error())
 		os.Exit(1)
@@ -27,7 +28,7 @@ func Run(dbPath string, migrationPath string) {
 	}
 	m, err := migrate.NewWithDatabaseInstance(
 		migrationPath,
-		"postgres", driver)
+		dbDriver, driver)
 	if err != nil {
 		log.Fatalln(err.Error())
 		os.Exit(1)
