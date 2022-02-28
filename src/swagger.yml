@@ -330,4 +330,9 @@ responses:
       type: object
 schemes:
 - http
+securityDefinitions:
+  authorization:
+    in: header
+    name: KEY
+    type: apiKey
 swagger: "2.0"
