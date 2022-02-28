@@ -49,7 +49,7 @@ func TestLoginUser(t *testing.T) {
 	jsonValue, _ := json.Marshal(value)
 
 	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonValue))
-	req.Header.Set(authoizationKey, fmt.Sprintf("Bearer %s", token))
+	req.Header.Set(authoizationKey, token)
 	testRouter.ServeHTTP(w, req)
 	require.Equal(t, 200, w.Code)
 	var body map[string]string
@@ -83,4 +83,18 @@ func TestLoginUserWithNotExistUser(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonValue))
 	testRouter.ServeHTTP(w, req)
 	require.Equal(t, 404, w.Code)
+}
+
+func TestGetUser(t *testing.T) {
+	user, token := createNewToken(t)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", fmt.Sprintf("/users/%d", user.ID), nil)
+	req.Header.Set(authoizationKey, token)
+	testRouter.ServeHTTP(w, req)
+	require.Equal(t, 200, w.Code)
+	var body map[string]interface{}
+	json.Unmarshal(w.Body.Bytes(), &body)
+	require.Equal(t, body["username"].(string), user.Username)
+	require.Equal(t, body["id"].(int32), user.ID)
+	require.Equal(t, body["currency"].(string), user.Currency)
 }

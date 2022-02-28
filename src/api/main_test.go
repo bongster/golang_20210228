@@ -48,7 +48,7 @@ func createNewToken(t *testing.T) (db.User, string) {
 	generatedToken, err := maker.CreateToken(user.Username, 15*time.Minute)
 	require.NoError(t, err)
 	require.NotEmpty(t, generatedToken)
-	return user, generatedToken
+	return user, fmt.Sprintf("Bearer %s", generatedToken)
 }
 func TestMain(m *testing.M) {
 	var err error
