@@ -12,8 +12,14 @@ swagger: check-install
 migrateup:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose up
 
+migrateup1:
+	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose up 1
+
 migratedown:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose down
+
+migratedown:
+	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose down1
 
 testdb:
 	PGPASSWORD=postgres psql postgres -h localhost -p 5432 -U postgres -c "CREATE DATABASE testdb" || true
