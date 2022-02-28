@@ -53,7 +53,7 @@ You have the luxury of proposing (not implementing) one killer feature in your a
 * In terminal -> go to src folder and `make migrateup`
 
 ### TODO
-* Fixing take longer in unit test
+* ~~Fixing take longer in unit test~~
 * Configure Logging system
 * Configure Monitoring System
 * Deployment
