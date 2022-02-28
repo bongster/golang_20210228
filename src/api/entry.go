@@ -2,6 +2,7 @@ package api
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	db "github.com/bongster/golang_20210228/db/sqlc"
@@ -41,6 +42,16 @@ func (server *Server) getEntry(ctx *gin.Context) {
 		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	user, err := server.store.GetUserByName(ctx, authPayload.Username)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	if entry.UserID != user.ID {
+		ctx.JSON(http.StatusForbidden, fmt.Errorf("user [%d] has no permission", user.ID))
 	}
 	ctx.JSON(http.StatusOK, entry)
 }
