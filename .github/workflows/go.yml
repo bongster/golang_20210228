@@ -44,6 +44,6 @@ jobs:
         DB_SOURCE: postgres://postgres:postgres@db:5432/testdb?sslmode=disable
     
     - name: Test
-      run: cd src && go test -v ./...
+      run: cd src && make test
       env:
         DB_SOURCE: postgres://postgres:postgres@db:5432/testdb?sslmode=disable
