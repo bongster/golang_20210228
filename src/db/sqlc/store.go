@@ -58,7 +58,13 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 		var err error
 		// Checking user balance
 		user1, err := store.GetUser(ctx, arg.FromUserID)
+		if err != nil {
+			return fmt.Errorf("from user [%d] is not exists", user1.ID)
+		}
 		user2, err := store.GetUser(ctx, arg.ToUserID)
+		if err != nil {
+			return fmt.Errorf("to user [%d] is not exists", user2.ID)
+		}
 		if user1.Balance < arg.Amount {
 			return fmt.Errorf("user [%d] balance are not enough to send", user1.ID)
 		}
