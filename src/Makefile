@@ -12,11 +12,20 @@ swagger: check-install
 migrateup:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose up
 
+migrateup1:
+	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose up 1
+
 migratedown:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose down
 
+migratedown1:
+	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose down 1
+
 testdb:
 	PGPASSWORD=postgres psql postgres -h localhost -p 5432 -U postgres -c "CREATE DATABASE testdb" || true
+
+dropdb:
+	PGPASSWORD=postgrespsql postgres -h localhost -p 5432 -U postgres -c "DROP DATABASE testdb" || true
 
 test_migrateup:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/testdb?sslmode=disable" -verbose up
@@ -28,3 +37,4 @@ test:
 	go test -v -cover -timeout 60s ./...
 sqlc:
 	sqlc generate -f sqlc.yaml
+

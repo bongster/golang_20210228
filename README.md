@@ -27,7 +27,7 @@ You have the luxury of proposing (not implementing) one killer feature in your a
 * [x] Maintain database schema
 * [x] model base Unit test
 * [x] Documentation
-* [ ] API base unit test
+* [x] API base unit test
 * [ ] Stress test
 * [ ] Logging System
 * [ ] Monitoring System
