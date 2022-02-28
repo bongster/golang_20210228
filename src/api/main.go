@@ -82,7 +82,7 @@ const (
 
 // Run HTTP api server
 func Run() {
-	config, err := util.LoadConfig(".")
+	config, _ := util.LoadConfig(".")
 	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatalln(err)
