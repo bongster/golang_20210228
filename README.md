@@ -1,7 +1,8 @@
+![pipeline](https://github.com/bongster/golang_20210228/actions/workflows/go.yml/badge.svg)
+
 # golang_20210228
 Golang Sample project
 > Sample transfer money project
-
 
 ### Requirements
 ------
