@@ -11,19 +11,12 @@ type Config struct {
 	DBSource      string `mapstructure:"DB_SOURCE"`
 	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
 	SecretKey     string `mapstructure:"SECRET_KEY"`
-	DBHost        string `mapstructure:"DB_HOST"`
-	DBUser        string `mapstructure:"DB_USER"`
-	DBPassword    string `mapstructure:"DB_PASSWORD"`
 }
 
 // LoadConfig load config variable from env file
-func LoadConfig(path string, args ...interface{}) (config Config, err error) {
-	name := "app"
-	if len(args) >= 1 {
-		name = args[0].(string)
-	}
+func LoadConfig(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
-	viper.SetConfigName(name)
+	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 	viper.AutomaticEnv()
 

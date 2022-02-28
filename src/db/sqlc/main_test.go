@@ -17,7 +17,7 @@ var testDB *sql.DB
 func TestMain(m *testing.M) {
 	var err error
 	var config util.Config
-	config, err = util.LoadConfig("../..", "test")
+	config, err = util.LoadConfig("../..")
 	fmt.Printf("%v", config)
 	testDB, err = sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
