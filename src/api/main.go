@@ -10,13 +10,6 @@
 // - application/json
 // Produces:
 // - application/json
-// Security:
-// - authorization
-// SecurityDefinitions:
-// authorization:
-//   type: apiKey
-//   name: KEY
-//   in: header
 // swagger:meta
 package api
 

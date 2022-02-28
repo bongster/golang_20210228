@@ -2,6 +2,33 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  Entry:
+    properties:
+      amount:
+        format: int64
+        type: integer
+        x-go-name: Amount
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      currency:
+        type: string
+        x-go-name: Currency
+      id:
+        format: int32
+        type: integer
+        x-go-name: ID
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+      user_id:
+        format: int32
+        type: integer
+        x-go-name: UserID
+    type: object
+    x-go-package: github.com/bongster/golang_20210228/db/sqlc
   Transfer:
     properties:
       amount:
@@ -117,9 +144,36 @@ definitions:
     x-go-package: github.com/bongster/golang_20210228/api
 info:
   description: Documentation for Payment API
-  title: Payment API.
+  title: classification Payment API.
   version: 1.0.0
 paths:
+  /entries:
+    get:
+      operationId: listEntry
+      responses:
+        "200":
+          $ref: '#/responses/listEntyResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+      tags:
+      - entries
+  /entries/{id}:
+    get:
+      operationId: getEntry
+      parameters:
+      - format: int32
+        in: path
+        name: id
+        required: true
+        type: integer
+        x-go-name: ID
+      responses:
+        "200":
+          $ref: '#/responses/getEntryResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+      tags:
+      - entries
   /login:
     get:
       operationId: loginUser
@@ -224,10 +278,20 @@ responses:
       required:
       - Message
       type: object
+  getEntryResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/Entry'
   getUserResponse:
     description: ""
     schema:
       $ref: '#/definitions/User'
+  listEntyResponse:
+    description: listEntyResponse return response type from /entries API
+    schema:
+      items:
+        $ref: '#/definitions/Entry'
+      type: array
   listUserResponse:
     description: ""
     schema:
@@ -251,7 +315,7 @@ responses:
       - Message
       type: object
   validationError:
-    description: ""
+    description: ValidationError use this error when invalid data comming
     schema:
       properties:
         FieldName:
@@ -266,9 +330,4 @@ responses:
       type: object
 schemes:
 - http
-securityDefinitions:
-  authorization:
-    in: header
-    name: KEY
-    type: apiKey
 swagger: "2.0"

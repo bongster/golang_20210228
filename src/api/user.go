@@ -120,6 +120,7 @@ func (server *Server) listUsers(ctx *gin.Context) {
 	users, err := server.store.ListUsers(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
 	}
 	ctx.JSON(http.StatusOK, users)
 }
