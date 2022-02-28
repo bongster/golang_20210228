@@ -132,7 +132,7 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 }
 
 const updateUserBalance = `-- name: UpdateUserBalance :one
-UPDATE users SET balance = $2, updated_at = now()
+UPDATE users SET balance = balance + $2, updated_at = now()
 WHERE id = $1
 RETURNING id, username, password, balance, currency, created_at, updated_at
 `

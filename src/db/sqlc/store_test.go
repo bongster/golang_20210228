@@ -45,7 +45,10 @@ func TestTransferTx(t *testing.T) {
 
 		_, err = store.GetTransfer(context.Background(), transfer.ID)
 		require.NoError(t, err)
-
-		// TODO: check user balance
 	}
+
+	updatedAccount1, _ := store.GetUser(context.Background(), account1.ID)
+	updatedAccount2, _ := store.GetUser(context.Background(), account2.ID)
+	require.Equal(t, updatedAccount1.Balance-int64(n)*amount, account1.Balance)
+	require.Equal(t, updatedAccount2.Balance+int64(n)*amount, account2.Balance)
 }
