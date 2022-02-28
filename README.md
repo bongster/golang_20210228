@@ -1,5 +1,6 @@
 # golang_20210228
 Golang Sample project
+> Sample transfer money project
 
 
 ### Requirements
@@ -50,6 +51,14 @@ You have the luxury of proposing (not implementing) one killer feature in your a
 ### HOW TO MIGRATE
 * In docker -> `docker-compose build migrate` -> `docker-compose start migrate`
 * In terminal -> go to src folder and `make migrateup`
+
+### TODO
+* Fixing take longer in unit test
+* Configure Logging system
+* Configure Monitoring System
+* Deployment
+* Set Load test
+* Support multiple currency by user
 
 ### Tech Stacks
 ------
