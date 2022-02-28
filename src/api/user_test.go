@@ -95,6 +95,6 @@ func TestGetUser(t *testing.T) {
 	var body map[string]interface{}
 	json.Unmarshal(w.Body.Bytes(), &body)
 	require.Equal(t, body["username"].(string), user.Username)
-	require.Equal(t, body["id"].(int32), user.ID)
+	require.Equal(t, int32(body["id"].(float64)), user.ID)
 	require.Equal(t, body["currency"].(string), user.Currency)
 }
