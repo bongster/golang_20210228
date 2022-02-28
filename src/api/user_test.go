@@ -98,3 +98,11 @@ func TestGetUser(t *testing.T) {
 	require.Equal(t, int32(body["id"].(float64)), user.ID)
 	require.Equal(t, body["currency"].(string), user.Currency)
 }
+func TestListUser(t *testing.T) {
+	_, token := createNewToken(t)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/users", nil)
+	req.Header.Set(authoizationKey, token)
+	testRouter.ServeHTTP(w, req)
+	require.Equal(t, 200, w.Code)
+}
