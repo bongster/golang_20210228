@@ -25,6 +25,6 @@ test_migratedown:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/testdb?sslmode=disable" -verbose down
 
 test:
-	go test -v -cover -timeout 40s ./...
+	go test -v -cover -timeout 60s ./...
 sqlc:
 	sqlc generate -f sqlc.yaml
