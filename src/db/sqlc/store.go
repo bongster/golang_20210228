@@ -74,7 +74,7 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 		// Update accounts balance
 		user1, err = store.UpdateUserBalance(ctx, UpdateUserBalanceParams{
 			ID:      user1.ID,
-			Balance: user1.Balance - arg.Amount,
+			Balance: -arg.Amount,
 		})
 		result.FromUser = user1
 		if err != nil {
@@ -82,7 +82,7 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 		}
 		user2, err = store.UpdateUserBalance(ctx, UpdateUserBalanceParams{
 			ID:      user2.ID,
-			Balance: user2.Balance + arg.Amount,
+			Balance: arg.Amount,
 		})
 		result.ToUser = user2
 		if err != nil {

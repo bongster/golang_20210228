@@ -14,7 +14,8 @@ func createNewUser(t *testing.T) User {
 	arg := CreateUserParams{
 		Username: fmt.Sprintf("daniel_%s", util.RandomString(10)),
 		Password: hash,
-		Balance:  0,
+		Balance:  1000,
+		Currency: "SGD",
 	}
 
 	user, err := testQueries.CreateUser(context.Background(), arg)

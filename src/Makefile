@@ -9,7 +9,22 @@ docs: check-install
 swagger: check-install
 	GO111MODULE=off swagger generate spec -w . -o ./swagger.yml --scan-models
 
+migrateup:
+	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose up
+
+migratedown:
+	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose down
+
+testdb:
+	PGPASSWORD=postgres psql postgres -h localhost -p 5432 -U postgres -c "CREATE DATABASE testdb" || true
+
+test_migrateup:
+	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/testdb?sslmode=disable" -verbose up
+
+test_migratedown:
+	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/testdb?sslmode=disable" -verbose down
+
 test:
-	go test -v -cover ./...
+	go test -v -cover -timeout 40s ./...
 sqlc:
 	sqlc generate -f sqlc.yaml
