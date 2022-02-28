@@ -18,10 +18,11 @@ import (
 )
 
 var (
-	testDB     *sql.DB
-	testRouter *gin.Engine
-	store      *db.Store
-	config     util.Config
+	testDB          *sql.DB
+	testRouter      *gin.Engine
+	store           *db.Store
+	config          util.Config
+	authoizationKey string = "Authorization"
 )
 
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
@@ -41,13 +42,13 @@ func createNewUser(t *testing.T) db.User {
 	require.Equal(t, user.Username, user.Username)
 	return user
 }
-func createNewToken(t *testing.T) string {
+func createNewToken(t *testing.T) (db.User, string) {
 	user := createNewUser(t)
 	maker := token.NewJWTMaker(config.SecretKey)
 	generatedToken, err := maker.CreateToken(user.Username, 15*time.Minute)
 	require.NoError(t, err)
 	require.NotEmpty(t, generatedToken)
-	return generatedToken
+	return user, generatedToken
 }
 func TestMain(m *testing.M) {
 	var err error

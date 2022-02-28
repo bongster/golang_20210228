@@ -19,11 +19,13 @@ func authMiddleware(tokenMaker token.Maker) gin.HandlerFunc {
 		if len(authroizationHeader) == 0 {
 			err := errors.New("authoization header is not provided")
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+			return
 		}
 		fields := strings.Fields(authroizationHeader)
 		if len(fields) > 2 {
 			err := errors.New("invalid authoization header format")
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+			return
 		}
 		if strings.ToLower(fields[0]) != "bearer" {
 			err := errors.New("unsupported authorization type")

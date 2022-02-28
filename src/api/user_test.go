@@ -38,3 +38,49 @@ func TestRegistUser(t *testing.T) {
 	require.NotZero(t, user.ID)
 	require.Equal(t, value["username"], user.Username)
 }
+
+func TestLoginUser(t *testing.T) {
+	user, token := createNewToken(t)
+	w := httptest.NewRecorder()
+	value := map[string]string{
+		"username": user.Username,
+		"password": "password",
+	}
+	jsonValue, _ := json.Marshal(value)
+
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonValue))
+	req.Header.Set(authoizationKey, fmt.Sprintf("Bearer %s", token))
+	testRouter.ServeHTTP(w, req)
+	require.Equal(t, 200, w.Code)
+	var body map[string]string
+	json.Unmarshal(w.Body.Bytes(), &body)
+	require.NotEmpty(t, body)
+	require.NotEmpty(t, body["access_token"])
+}
+
+func TestLoginUserWithInvalidPassword(t *testing.T) {
+	user, _ := createNewToken(t)
+	w := httptest.NewRecorder()
+	value := map[string]string{
+		"username": user.Username,
+		"password": "invalid",
+	}
+	jsonValue, _ := json.Marshal(value)
+
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonValue))
+	testRouter.ServeHTTP(w, req)
+	require.Equal(t, 401, w.Code)
+}
+
+func TestLoginUserWithNotExistUser(t *testing.T) {
+	w := httptest.NewRecorder()
+	value := map[string]string{
+		"username": fmt.Sprintf("anonymous_%s", util.RandomString(10)),
+		"password": "password",
+	}
+	jsonValue, _ := json.Marshal(value)
+
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonValue))
+	testRouter.ServeHTTP(w, req)
+	require.Equal(t, 404, w.Code)
+}
