@@ -6,6 +6,15 @@ import (
 	"time"
 )
 
+type Entry struct {
+	ID        int32     `json:"id"`
+	UserID    int32     `json:"user_id"`
+	Amount    int64     `json:"amount"`
+	Currency  string    `json:"currency"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type Transfer struct {
 	ID         int32     `json:"id"`
 	FromUserID int32     `json:"from_user_id"`

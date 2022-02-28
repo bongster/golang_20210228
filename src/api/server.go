@@ -35,6 +35,8 @@ func NewServer(store *db.Store, config util.Config) *Server {
 		privateRouter.GET("/users/:id", server.getUser)
 		privateRouter.GET("/users", server.listUsers)
 		privateRouter.POST("/transfers", server.createTransfer)
+		privateRouter.GET("/transactions", server.listEntries)
+		privateRouter.GET("/transactions/:id", server.getEntry)
 	}
 
 	// Set Doucumentation

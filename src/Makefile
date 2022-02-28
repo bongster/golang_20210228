@@ -4,10 +4,10 @@ check-install:
 	which swagger || GO11MOBULE=off go get -u github.com/go-swagger/go-swagger/cmd/swagger
 
 docs: check-install
-	GO111MODULE=off swagger generate markdown -f ./swagger.yml --output ../docs/docs.md
+	GO11MODULE=off swagger generate markdown -f ./swagger.yml --output ../docs/docs.md
 
 swagger: check-install
-	GO111MODULE=off swagger generate spec -w . -o ./swagger.yml --scan-models
+	GO11MODULE=off swagger generate spec -w . -o ./swagger.yml --scan-models
 
 migrateup:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/payments?sslmode=disable" -verbose up
@@ -25,6 +25,6 @@ test_migratedown:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/testdb?sslmode=disable" -verbose down
 
 test:
-	go test -v -cover -timeout 40s ./...
+	go test -v -cover -timeout 60s ./...
 sqlc:
 	sqlc generate -f sqlc.yaml
