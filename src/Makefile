@@ -24,6 +24,9 @@ migratedown1:
 testdb:
 	PGPASSWORD=postgres psql postgres -h localhost -p 5432 -U postgres -c "CREATE DATABASE testdb" || true
 
+dropdb:
+	PGPASSWORD=postgres psql postgres -h localhost -p 5432 -U postgres -c "DROP DATABASE testdb" || true
+
 test_migrateup:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/testdb?sslmode=disable" -verbose up
 
